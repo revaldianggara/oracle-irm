@@ -47,7 +47,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const current =
     allNavItems.find((i) => i.to !== "/" && pathname.startsWith(i.to)) ??
-    allNavItems[0];
+    allNavItems.find((i) => i.to === "/")!;
   const unread = notifications.filter((n) => !read.includes(n.id));
 
   const navLink = (item: (typeof allNavItems)[number]) => {
@@ -55,7 +55,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return (
       <Link
         key={item.to}
-        to={item.to}
+        to={item.to as never}
         title={item.label}
         className={cn(
           "group flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors",
@@ -164,7 +164,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <DropdownMenuSeparator />
               {notifications.map((n) => (
                 <DropdownMenuItem key={n.id} asChild>
-                  <Link to={n.to} onClick={() => setRead((r) => [...new Set([...r, n.id])])} className="flex-col items-start gap-0.5 py-2">
+                  <Link to={n.to as never} onClick={() => setRead((r) => [...new Set([...r, n.id])])} className="flex-col items-start gap-0.5 py-2">
                     <div className="flex w-full items-center gap-2">
                       <span className="text-sm font-medium">{n.title}</span>
                       {read.includes(n.id) ? (
@@ -199,7 +199,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem asChild>
-                <Link to="/admin">Admin Console</Link>
+                <Link to={"/admin" as never}>Admin Console</Link>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => toast("Signed out (prototype)")}>Sign out</DropdownMenuItem>
             </DropdownMenuContent>
